@@ -40,7 +40,7 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
                     print(f"Error: {e}")
 
             for list in list_of_items_and_information:
-                item_sentence = f"- {list[0]}: file_size:{list[1]}, is_dir={list[2]}"
+                item_sentence = f"- {list[0]}: file_size={list[1]}, is_dir={list[2]}"
                 list_of_strings_of_information.append(item_sentence)
 
             return "\n".join(list_of_strings_of_information)
