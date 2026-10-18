@@ -37,7 +37,7 @@ def run_python_file(
                 command.extend(args)
 
             completed_process = subprocess.run(
-                command, capture_output=True, timeout=30, text=True
+                command, cwd=work_directory, capture_output=True, timeout=30, text=True
             )
 
             output_string = ""
@@ -64,6 +64,7 @@ def run_python_file(
 
     except Exception as e:
         print(f"Error: {e}")
+        return f"Error: {e}"
 
 
 schema_run_python_file = {
@@ -73,14 +74,16 @@ schema_run_python_file = {
         "description": "Provides ability to run python files with the relevant arguments and provides the output from that function",
         "parameters": {
             "type": "object",
+            "required": ["file_path"],
             "properties": {
                 "file_path": {
                     "type": "string",
                     "description": "File path of the python program to be executed",
                 },
                 "args": {
-                    "type": "list",
-                    "description": "A list of arguments in the form of strings that should be passed to the python file being run",
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Command-line arguments passed to the Python file",
                 },
             },
         },

@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from call_function import available_functions
+from call_function import available_functions, call_function
 from prompts import system_prompt
 
 load_dotenv()
@@ -42,7 +42,13 @@ def main():
     if message.tool_calls:
         for tool_call in message.tool_calls:
             function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
+            result_message = call_function(tool_call)
+
+            if result_message["content"] == None:
+                raise Exception("the content of the result is None")
+
+            if args.verbose == True:
+                print(f"-> {result_message['content']}")
 
     if not response.usage:
         raise RuntimeError("token usage is None")
