@@ -26,12 +26,10 @@ def get_file_content(working_directory: str, file_path: str) -> str:
 
         if valid_target_dir:
             try:
-                f = open(target_path)
-                content = f.read(READ_LIMIT)
-                if f.read(1):
-                    content += (
-                        f'[...File "{file_path}" truncated at {READ_LIMIT} characters'
-                    )
+                with open(target_path) as f:
+                    content = f.read(READ_LIMIT)
+                    if f.read(1):
+                        content += f'[...File "{file_path}" truncated at {READ_LIMIT} characters'
 
                 return content
 
